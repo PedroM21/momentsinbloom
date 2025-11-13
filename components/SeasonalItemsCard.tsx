@@ -3,7 +3,21 @@ import urlBuilder from "@sanity/image-url";
 import Image from "next/image";
 const builder = urlBuilder(client);
 
-async function getSeasonalItems() {
+interface SeasonalItems {
+  _id: string;
+  name: string;
+  description: string;
+  price: string;
+  photo?: {
+    _type: "image";
+    asset: {
+      _ref: string;
+      _type: "reference";
+    };
+  };
+}
+
+async function getSeasonalItems(): Promise<SeasonalItems[]> {
   const query = `*[_type == "seasonalMenu"]{
     _id, name, description, price, photo}`;
   return await client.fetch(query);

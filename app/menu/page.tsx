@@ -4,7 +4,15 @@ import Navigation from "@/components/Navigation";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 
-async function getMenuItems() {
+interface MenuItem {
+  _id: string;
+  category: string;
+  name: string;
+  description: string;
+  price: string;
+}
+
+async function getMenuItems(): Promise<MenuItem[]> {
   const query = `*[_type == "menu"]{
     _id, category, name, description, price}`;
   return await client.fetch(query);
@@ -13,7 +21,7 @@ async function getMenuItems() {
 export default async function Menu() {
   const items = await getMenuItems();
 
-  const categories = [
+  const categories: string[] = [
     "Classic Blends",
     "Green & White Teas",
     "House Specialties",
